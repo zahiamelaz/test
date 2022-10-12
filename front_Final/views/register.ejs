@@ -1,0 +1,38 @@
+<%- include('includes/header.ejs')  %>
+<body>
+    <h3>Je suis register</h3>
+    <% if(locals.message){ %>
+        <p style="color: orangered;"><%= locals.message %> </p>
+        <% } %> 
+    <% if(locals.error){ %>
+        <p style="color: red;"><%= locals.error %> </p>
+   <% } %> 
+   <div class="card col-md-10">
+       
+    <div class="row">                    
+        <div class="col-md-4"> 
+                                                                    
+             <img class="card-img-top m-1" src="/img/web.jpg " alt="Card image cap">  
+                                            
+        </div>
+        <div class="col-md-4">
+            <div class="card-body  "> 
+                <form action="/register" method="post" enctype="multipart/form-data">  
+                    <input type="text" name="firstname" placeholder="firstname" class="form-control m-3">
+                    <input type="text" name="lastname" placeholder="lastname"class="form-control m-3">
+                    <input type="email" name="email" placeholder="email"class="form-control m-3">
+                    <input type="password" name="password" placeholder="password" class="form-control m-3">
+                    <input type="text" name="bio" placeholder="bio"class="form-control m-3">
+                    <input type="file" name="avatar"class="form-control m-3">
+                    <button type="submit" class="form-control m-3" style="background: blue;">Register</button>
+                    <a type="button"  href="/login" class="form-control m-3 " style="background: blue;">connexion</a>
+               </form>
+            </div>
+        </div>                          
+    </div>
+
+</div>          
+   
+    <a href="/login">LOG HERE</a>
+</body>
+</html>

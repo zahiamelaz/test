@@ -1,0 +1,253 @@
+<%- include('includes/header.ejs') %>
+    <body>
+        <h1>je suis post by ID</h1>
+        <%- include('includes/navbar.ejs') %>
+    
+            <% if(locals.myPost.error){ %>
+                <p class="alert alert-danger">
+                    <%= locals.myPost.error %> go back to <a href="/feed">feed</a>
+                </p>
+                <% } %>
+                    <% if(locals.message.length[0] !=="" ){ %>
+                        <p style="color: green;">
+                            <%= locals.message %>
+                        </p>
+                        <% } %>
+
+                        <div class="container">
+                           
+                                        <div class="col-md-10 ">
+                                            <% if(locals.myPost.success && locals.users.success){ %>
+                                                <% locals.users.success.map((user)=>{ %>
+                                                    <% if(locals.myPost.success.userId===user.id){ %> 
+                                                        <div class="card mb-3">
+                                                            <div class="card-body">
+                                                                <div class="starcard">
+                                                                <div class="user">
+                                                                    <img class="card-img-top" src="/img/web.jpg " alt="photo de profil" style="width: 50px;height: 50px;border-radius: 100%;">
+                                                                    <div class="title">
+                                                                        <h4 class="fulname"><%= user.firstname %> <%= user.lastname %></h4> 
+                                                                        <% if(locals.myPost.success.userId ===locals.myProfil.success.id ){ %>
+                                                                            <form action="/posts/<%= locals.myPost.success.id %> " method="post" enctype="multipart/form-data">
+                                                                                <a data-toggle="collapse" href="#collapsetitre"  aria-expanded="false" aria-controls="collapseExample">
+                                                                                    <h6 class="fulname"><i class="fa-solid fa-marker"></i> <%= locals.myPost.success.title %></h6></a>
+                                                                                    <div class="collapse" id="collapsetitre">
+                                                                                        <div class="modifier">
+                                                                                            <input type="text" name="text" placeholder="new text">
+                                                                                            <button type="submit" class="btn btn-primary btn-sm" id="change">save</button>
+                                                                                    </div>
+                                                                                    </div>
+                                                                                
+                                                                    </div>
+                                                                </div>   
+                                                                </div>
+                                                        
+                                                                <a data-toggle="collapse" href="#collapsetext"  aria-expanded="false" aria-controls="collapseExample">
+                                                                    <p class="card-text mb-2"><i class="fa-solid fa-marker"></i><%= locals.myPost.success.text %> </p></a>
+                                                                    <div class="collapse" id="collapsetext">
+                                                                        <div class="modifier">
+                                                                            <input type="text" name="text" placeholder="new text">
+                                                                            <button type="submit" class="btn btn-primary btn-sm" id="change">save</button>
+                                                                    </div>
+                                                                    </div>
+                                                            </div>
+                                                            <a data-toggle="collapse" href="#collapseimg"  aria-expanded="false" aria-controls="collapseExample">
+                                                                <i class="fa-solid fa-marker"></i> <img class="img-fluid " src="/img/web.jpg " alt="photo de post" style="height:350px ;width: 100%;" ></a>
+                                                                <div class="collapse" id="collapseimg">
+                                                                    <div class="modifier">
+                                                                        <input type="file" name="picture">
+                                                                        <button type="submit" class="btn btn-primary btn-sm" id="change">save</button>
+                                                                </div>
+                                                                </div>
+                                                        
+                                                            </form>
+                                                        <% } %>
+                                                            <div class="likes">
+                                                                <form action="/post/unlike/<%= locals.myPost.success.id %>" method="post">
+                                                                    <button class="btndislike" type="submit"><i class="fa-solid fa-thumbs-down"></i></button>
+                                                                </form>
+                                                            <form action="/post/like/<%= locals.myPost.success.id %>" method="post">
+                                                                    <button class="btnlike" type="submit"><i class="fa-solid fa-thumbs-up"></i></button>
+                                                            </form>
+                                                            <span> <%= locals.myPost.success.likesCount %> </span>
+                                                                
+                                                            </div>
+                                                            <hr>
+                                                            <% if(locals.myPost.success){ %>
+                                                            <div class="commentaires" id="commentaires">
+                                                                <% locals.myPost.success.comments.map((com)=>{ %>
+                                                                    <% locals.users.success.map((userCom)=>{ %>
+                                                                        <% if(userCom.id===com.userId){ %>
+                                                                            <div class="starcard">
+                                                                                <div class="user">
+                                                                                <img class="card-img-top" src="/img/web.jpg " alt="photo de profil" style="width: 50px;height: 50px;border-radius: 100%;">
+                                                                                    <div class="title">
+                                                                                        <h5 class="fulname"> <%= userCom.firstname %> <%= userCom.lastname %> </h5>
+                                                                                    
+                                                                                    </div>
+                                                                                    <% if(locals.myProfil.success.id===com.userId){%>
+
+                                                                                        <form action="/update/post/<%= locals.myPost.success.id %>/com/<%= com.id %>" method="post">
+                                                                                        
+                                                                                            <a data-toggle="collapse" href="#collapsecom"  aria-expanded="false" aria-controls="collapseExample">
+                                                                                                <h5 class="card-text"> : <%= com.text %> <i class="fa-solid fa-marker"></i></h5></a> 
+                                                                                                <div class="collapse" id="collapsecom">
+                                                                                                    <div class="modifier">
+                                                                                                        <input type="text" name="text"  placeholder="update com">
+                                                                                                        <button type="submit" class="btn btn-primary btn-sm" id="change">save</button>
+                                                                                                </div>
+                                                                                                </div>  
+                                                                                        </form>
+                                                                                        <form action="/delete/post/<%= locals.myPost.success.id %>/com/<%= com.id %>"  method="post">
+                                                                                            <button type="submit" class="btnsup"><i class="fa-regular fa-trash-can color:red"></i></button>
+                                                                                        </form>
+                                                                                </div>
+                                                                                    
+                                                                                    <% } %>
+                                                                            </div>
+
+                                                                        <% } %>
+                                                                    <% }) %>
+                                                                <% }) %>
+                                                            </div>
+                                                            <% } %>                                                                
+                                                    <% } %>
+                                                <% }) %>
+                                            <% } %>
+                                                            <form action="/newCom/<%= locals.myPost.success.id %>" method="post">
+                                                                <div class="addcom">
+                                                                    <input type="text" name="text" placeholder="Your Comm" class="form-control">
+                                                                    <button type="submit" class="btn btn-primary">Commenter</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        
+                                        </div> 
+                                                  
+
+
+                                        <% if(locals.myPost.success && locals.users.success){ %>
+                                            <% locals.users.success.map((user)=>{ %>
+                                                <% if(locals.myPost.success.userId===user.id){ %> 
+
+                                        <ul style="border: 1px solid blue;">
+                                            <% if(user.avatar !=null && user.id !=myProfil.success.id){ %>
+                                                <a href="/profil/<%= user.id %> "><img
+                                                        src="../data/uploads/<%= user.avatar %>" alt="PP"
+                                                        style="width: 50px;height: 50px;border-radius: 100%;"></a>
+                                                <% } %>
+                                                    <% if(user.avatar !=null && user.id===myProfil.success.id){ %>
+                                                        <a href="/profil/"><img src="../data/uploads/<%= user.avatar %>"
+                                                                alt="PP"
+                                                                style="width: 50px;height: 50px;border-radius: 100%;"></a>
+                                                        <% } %>
+                                                            <li><strong>Nom : </strong>
+                                                                <%= user.firstname %>, <%= user.lastname %>
+                                                            </li><br>
+                                                            <li><strong>Title: </strong>
+                                                                <%= locals.myPost.success.title %>
+                                                                <% if(locals.myPost.success.userId ===locals.myProfil.success.id ){ %>
+                                                                    <form action="/posts/<%= locals.myPost.success.id %> " method="post" enctype="multipart/form-data">
+                                                                        <input type="text" name="title" placeholder="new title"> 
+                                                            </li>
+                                                            <li><strong>Text : </strong>
+                                                                <%= locals.myPost.success.text %> <br>
+                                                                <input type="text" name="text" placeholder="new text">
+                                                            </li><br>
+                                                            <% if(locals.myPost.success.picture != null){ %>
+                                                                <li><img src="../data/uploads/<%= locals.myPost.success.picture %> " alt="photo post <%= locals.myPost.success.id %>" style="width: 300px; height: 300px; border-radius: 10px;"></li>
+                                                                <input type="file" name="picture">
+                                                              <% } %> 
+                                                              <br><br><button type="submit">update</button><br><br>
+                                                            </form>
+                                                              <% } %>
+                                                            <li><strong>Likes : </strong>
+                                                                <%= locals.myPost.success.likesCount %>
+                                                            </li><br>
+                                                            <div
+                                                                style="display:flex; justify-content: space-between;width: 150px;">
+                                                                <form
+                                                                    action="/post/like/<%= locals.myPost.success.id %>"
+                                                                    method="post">
+                                                                    <button type="submit">LIKE</button>
+                                                                </form>
+
+                                                                <form
+                                                                    action="/post/unlike/<%= locals.myPost.success.id %>"
+                                                                    method="post">
+                                                                    <button type="submit">UNLIKE</button>
+                                                                </form>
+                                                            </div>
+
+                                                            <br>
+                                        </ul>
+                                        <% if(locals.myPost.success){ %>
+                                            <div>
+                                                ---------------------------COMM-------------------------------------
+                                            </div>
+                                            <% locals.myPost.success.comments.map((com)=>{ %>
+                                                <% locals.users.success.map((userCom)=>{ %>
+                                                    <% if(userCom.id===com.userId){ %>
+                                                        <ul style="border: 1px solid red;">
+                                                            <% if(userCom.avatar !=null && locals.myProfil.success.id
+                                                                !=com.userId ){ %>
+                                                                <li><a href="/profil/<%= userCom.id %> "><img
+                                                                            src="../data/uploads/<%= userCom.avatar  %> "
+                                                                            alt="photo de profil"
+                                                                            style="width: 50px;height: 50px;border-radius: 100%;"></a>
+                                                                </li><br>
+                                                                <% } %>
+                                                                    <% if(locals.myProfil.success.id===com.userId){ %>
+                                                                        <li><a href="/profil/"><img
+                                                                                    src="../data/uploads/<%= userCom.avatar  %> "
+                                                                                    alt="photo de profil"
+                                                                                    style="width: 50px;height: 50px;border-radius: 100%;"></a>
+                                                                        </li><br>
+                                                                        <% } %>
+                                                                            <li><strong>Name : </strong>
+                                                                                <%= userCom.firstname %>, <%=
+                                                                                        userCom.lastname %>
+                                                                            </li>
+                                                                            <li><strong>Content : </strong>
+                                                                                <%= com.text %>
+                                                                            </li>
+
+                                                                            <% if(locals.myProfil.success.id===com.userId){%>
+
+                                                                                <form
+                                                                                    action="/update/post/<%= locals.myPost.success.id %>/com/<%= com.id %>"
+                                                                                    method="post">
+                                                                                    <input type="text" name="text"
+                                                                                        placeholder="update your com">
+                                                                                    <button
+                                                                                        type="submit">Update</button>
+                                                                                </form>
+                                                                                <form
+                                                                                    action="/delete/post/<%= locals.myPost.success.id %>/com/<%= com.id %>"
+                                                                                    method="post">
+                                                                                    <button type="submit">Suprimé mon
+                                                                                        com</button>
+                                                                                </form>
+                                                                                <% } %>
+                                                        </ul>
+                                                        <% } %>
+                                                            <% }) %>
+                                                                <% }) %>
+                                                                    <% } %> 
+
+                                                                        <% } %>
+                                                                            <% }) %>
+                                                                                <% } %>
+                                                                                    <form action="/newCom/<%= locals.myPost.success.id %>" method="post">
+                                                                                        <input type="text" name="text"
+                                                                                            placeholder="Your Comm">
+                                                                                        <button
+                                                                                            type="submit">Commenter</button>
+                                                                                    </form>
+                                                                                </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>                                                                                                                                                               
+    </body>
+
+    </html>

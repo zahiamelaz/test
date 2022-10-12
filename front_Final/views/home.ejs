@@ -1,0 +1,26 @@
+<%- include('includes/header.ejs') %>
+
+    <body>
+        <h3>Je suis home</h3>        
+                    <% if(locals.message2){ %>
+                        <p style="color: rgb(128, 0, 0);">
+                            <%= locals.message2 %>
+                        </p>
+                        <% } %>
+                        <% if(locals.message){ %>
+                            <p style="color: green;">
+                                <%= locals.message %>
+                            </p>
+                            <% } %>
+
+                            <% if(locals.myProfil.success){ %>
+                                <%- include('includes/navbar.ejs') %>
+                                    <% } %>
+
+                                        <% if(locals.myProfil.error){ %>
+                                            <%- include('includes/navbarHome.ejs') %>
+                                                <% } %>
+
+    </body>
+
+    </html>

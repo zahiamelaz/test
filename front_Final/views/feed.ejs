@@ -1,0 +1,128 @@
+<%- include('includes/header.ejs')  %>
+
+  <body>
+    <h2>Je suis le Feed</h2><br><br>    
+    <% const users = locals.users.success %> 
+    <% const posts = locals.posts.success %> 
+    <% const myProfil = locals.myProfil.success %> 
+    
+
+
+    <%- include('includes/navbar.ejs')  %> 
+    <br>
+    <% if(locals.myProfil.error || locals.posts.error || locals.users.error){ %>
+      <p><%= locals.myProfil.error %> </p>
+      <% } %> 
+      
+      <% if(locals.message){ %>
+        <p style="color: green;"> <%= locals.message %> </p>
+    <% } %>  
+<div class="container">
+      
+      <% if(users && posts && myProfil){ %>   
+            
+              <div class="col-md-8 ">
+                  <div class="card-body">
+                    <form action="/newPost" method="post" enctype="multipart/form-data">
+                      <input class="form-control m-1" type="text" name="title" placeholder="Title" />
+                          <textarea class="form-control m-1" placeholder="Ecrire ici"  name="text" id="editcontent" style="height: 50px"></textarea>
+                          <div class="collapse" id="collapseExample">
+                             <input class="form-control m-1" type="file" name="picture">
+                          </div>
+                          <a class="btn btn-success m-1" id="posts" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fa-regular fa-image-landscape"></i>
+                          </a>
+                          <input  id="posts" type="submit" value="Publier" class="btn btn-success ">
+                      </form>
+                  </div>
+              </div>
+    <% posts.reverse().map((post)=>{ %>
+      <% users.map((user)=>{ %>
+        <% if(user.id === post.userId){ %>  
+          <div class="col-md-10 ">
+              <div class="card mb-3">
+                  <div class="card-body">
+                      <div class="starcard">
+                        <div class="user">
+                           <img class="card-img-top" src="/img/web.jpg " alt="photo de profil" style="width: 50px;height: 50px;border-radius: 100%;">
+                            <div class="title">
+                                <h4 class="fulname"><%= user.firstname %> <%= user.lastname %></h4> 
+                                <h6 class="fulname"><%= post.title  %> </h6>
+                            </div>
+                        </div>  
+                        <div class="edit_delete"> 
+                            <% if(myProfil.id === post.userId){ %>
+                              <div class="dropdown">
+                                  <button class="btn btn-dark " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                  </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a href="/posts/<%= post.id %> " class="edit"><i class="fa-solid fa-marker"></i> Edit post</p></a>
+                                    <form action="/delete<%=post.id %>" method="post">
+                                      <button type="submit" class="btnsup"><i class="fa-regular fa-trash-can color:red"></i> Supprimer</button>
+                                    </form>
+                                </div>
+                              </div>                              
+                            <% } %> 
+                        </div>   
+                      </div>
+                     
+                      <p class="card-text"><%= post.text %></p>
+                    
+                  </div>
+                  <img class="card m-3" src="/img/web.jpg " alt="photo de post" style="height:300px ;" >
+                  <div class="likes">
+                    <button class="btndislike" type="submit"><i class="fa-solid fa-thumbs-down"></i></button>
+                    <button class="btnlike" type="submit"><i class="fa-solid fa-thumbs-up"></i></button>
+                    <span>(<%= post.likesCount %>)</span>
+                    <a href="/posts/<%= post.id %> #commentaires" class="linkcomment">Commentaires</a>
+                      
+                  </div>
+              </div>
+          </div>   
+
+
+
+
+
+
+
+
+      <ul>
+       
+          <div>
+            <% if(user.avatar != null && myProfil.id != post.userId ){ %>
+              <li><a href="/profil/<%= user.id %> "><img src="../data/uploads/<%= user.avatar  %> " alt="photo de profil" style="width: 50px;height: 50px;border-radius: 100%;"></a></li>
+              <% } %> 
+              <% if(myProfil.id === post.userId){ %>
+              <li><a href="/profil/"><img src="../data/uploads/<%= user.avatar  %> " alt="photo de profil" style="width: 50px;height: 50px;border-radius: 100%;"></a></li>
+                <% } %> 
+        <li><strong>TITLE : </strong><%= post.title  %> </li>
+        <li><strong>TEXTE : </strong><%= post.text %></li>
+        <% if(post.picture != null){ %>
+          <li><img src="../data/uploads/<%= post.picture %> " alt="photo post <%= post.id %>" style="width: 300px; height: 300px; border-radius: 10px;"></li>
+        <% } %>   
+        <li><strong>LIKES : </strong><%= post.likesCount %></li>
+        <li><strong>USER : </strong><%= user.firstname %> <%= user.lastname %> </li>
+        <% if(myProfil.id === post.userId){ %>
+          <a href="/posts/<%= post.id %> ">editer mon post</p></a>
+          <form action="/delete<%=post.id %>" method="post">
+          <button type="submit">Supp post</button>
+          </form>
+          <br>
+        <% } %> 
+        <% if(myProfil.id != post.userId){ %>
+          <a href="/posts/<%= post.id %> ">voir le post</p></a>
+        <% } %> 
+      </ul>
+      <br>
+    <% } %> 
+      <% }) %> 
+      <% }) %> 
+    <% } %> 
+  </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

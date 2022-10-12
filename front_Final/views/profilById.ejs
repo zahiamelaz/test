@@ -1,0 +1,50 @@
+<%- include('includes/header.ejs') %>
+
+    <body>
+        <h1>je suis user by ID</h1>
+
+        <%- include('includes/navbar.ejs') %>
+
+            <% if(locals.success){ %>
+                <div class="card col-md-10">
+                    <form action="/profil" method="post" enctype="multipart/form-data">
+                        <div class="row">                    
+                            <div class="col-md-4"> 
+                                <% if(locals.success.avatar !=null){ %>                                                          
+                                 <img class="card-img-top m-1" src="/img/web.jpg " alt="Card image cap">  
+                                 <% } %>                                   
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card-body  ">    
+                                    <p class="card-text mb-2"><strong>Lastname :</strong> <%= locals.success.lastname %></p>
+                                    <p class="card-text mb-2"><strong>Firstname :</strong><%= locals.success.firstname %> </p>
+                                    <p class="card-text "><strong>Bio :</strong><%= locals.success.bio %> </p>                                    
+                                    <p class="card-text "><strong> Email :</strong><%= locals.success.email %> </p>
+                                </div>
+                            </div>                          
+                        </div>
+                    </form>
+                </div>  
+
+
+
+                
+                <ul>
+                    <% if(locals.success.avatar !=null){ %>
+                        <li><img src="../data/uploads/<%= locals.success.avatar  %> " alt="photo de profil"
+                                style="width: 50px;height: 50px;border-radius: 100%;"></li>
+                        <% } %>
+                            <li><strong>Email : </strong>
+                                <%= locals.success.email %>
+                            </li><br>
+                            <li><strong>Firstname : </strong>
+                                <%= locals.success.firstname %>
+                            </li><br>
+                            <li><strong>Lastname : </strong>
+                                <%= locals.success.lastname %>
+                            </li><br>
+                            <li><strong>Bio : </strong>
+                                <%= locals.success.bio %>
+                            </li>
+                </ul>
+                <% } %>

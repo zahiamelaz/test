@@ -1,0 +1,11 @@
+
+---------------------------
+ 1)  GIT CLONE https://github.com/KAyoube/Zahia-CSS.git
+-------------------------------
+2) tu ouvre 2 terminal
+-------------------------
+3) dans le premier tu fais cd front_Final apres tu fais npm i 
+
+------------------------
+
+4) dans le deuxiemme tu fais cd back apres tu fais npm i une fois que tout est installé tu fais npm run config
